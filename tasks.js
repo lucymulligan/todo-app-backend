@@ -1,6 +1,8 @@
 const serverless = require('serverless-http');
 const express = require('express');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 
 app.get('/tasks', function (request, response) {
 
