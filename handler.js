@@ -1,14 +1,15 @@
-'use strict';
+const serverless = require('serverless-http');
+const express = require('express');
+const app = express();
 
-module.exports.hello = async (event) => {
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless v1.0! Your function executed successfully!',
-      input: event,
-    }, null, 2),
+app.get('/tasks', function (request, response) {
+
+  const username = request.query.username;
+
+  const someJson = {
+    message: "Hello " + username + ", how are you?"
   };
+  response.json(someJson);
+})
 
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
-};
+module.exports.handler = serverless(app);
