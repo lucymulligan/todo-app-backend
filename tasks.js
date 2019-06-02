@@ -2,6 +2,8 @@ const serverless = require('serverless-http');
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const mysql = require('mysql');
+
 app.use(cors());
 
 // host will be the endpoint address or what machine am i connecting to
@@ -16,13 +18,13 @@ const connection = mysql.createConnection({
 
 app.get("/tasks", function(request, response) {
   const username = request.query.username;
-  let query = "SELECT * FROM Task";
+  let queryToExecute = "SELECT * FROM Tasks";
   if (username) {
-    query =
-      "SELECT * FROM Task JOIN User on Task.UserId = User.UserId WHERE User.Username = " +
+    queryToExecute =
+      "SELECT * FROM Task JOIN User on Tasks.UserId = User.UserId WHERE User.Username = " +
       connection.escape(username);
   }
-  connection.query(query, (err, queryResults) => {
+  connection.query(queryToExecute, (err, queryResults) => {
     if (err) {
       console.log("Error fetching tasks", err);
       response.status(500).json({
