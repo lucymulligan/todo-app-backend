@@ -5,6 +5,7 @@ const cors = require('cors');
 const mysql = require('mysql');
 
 app.use(cors());
+app.use(express.json());
 
 // host will be the endpoint address or what machine am i connecting to
 // user is master user - generally wouldn't do this - admin
@@ -37,5 +38,11 @@ app.get("/tasks", function(request, response) {
     }
   });
 });
+
+app.post("/tasks", function(request, response) {
+  const taskToBeSaved = request.body;
+
+  console.log(taskToBeSaved);
+})
 
 module.exports.handler = serverless(app);
