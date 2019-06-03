@@ -25,11 +25,11 @@ app.get("/tasks", function(request, response) {
       "SELECT * FROM Task JOIN User on Tasks.UserId = User.UserId WHERE User.Username = " +
       connection.escape(username);
   }
-  connection.query(queryToExecute, (err, queryResults) => {
-    if (err) {
-      console.log("Error fetching tasks", err);
+  connection.query(queryToExecute, (error, queryResults) => {
+    if (error) {
+      console.log("Error fetching tasks", error);
       response.status(500).json({
-        error: err
+        error: error
       });
     } else {
       response.json({
@@ -40,9 +40,23 @@ app.get("/tasks", function(request, response) {
 });
 
 app.post("/tasks", function(request, response) {
+  
   const taskToBeSaved = request.body;
 
-  console.log(taskToBeSaved);
-})
+  connection.query('INSERT INTO Task SET ?', taskToBeSaved, function (error, results, fields) {
+    if (error) {
+      console.log("Error saving your task!", err);
+      response.status(500).json({
+        error: err
+      });
+    } 
+    else { 
+      response.json({
+        TaskID: results.insertID
+      });
+    }
+  });
+});
+
 
 module.exports.handler = serverless(app);
