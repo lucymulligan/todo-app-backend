@@ -62,7 +62,7 @@ app.delete("/tasks", function(request, response) {
 
   const taskToBeDeleted = request.body; 
 
-connection.query('DELETE FROM Tasks SET ?', function (error, results, fields) {
+connection.query('DELETE FROM Tasks', function (error, results, fields) {
     if (error) {
       console.log("Task could not be deleted", error);
       response.status(500).json({
