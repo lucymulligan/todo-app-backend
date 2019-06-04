@@ -40,23 +40,40 @@ app.get("/tasks", function(request, response) {
 });
 
 app.post("/tasks", function(request, response) {
-  
+
   const taskToBeSaved = request.body;
 
-  connection.query('INSERT INTO Task SET ?', taskToBeSaved, function (error, results, fields) {
-    if (error) {
-      console.log("Error saving your task!", err);
+  connection.query('INSERT INTO Tasks SET ?', taskToBeSaved, function (error, results, fields) {
+   if (error) {
+    console.log("Error saving your task!", error);
       response.status(500).json({
-        error: err
-      });
+      error: error
+    });
     } 
     else { 
-      response.json({
-        TaskID: results.insertID
-      });
-    }
+    response.json({
+      TaskID: results.insertID
+    });
+   }
   });
 });
 
+app.delete("/tasks", function(request, response) {
+
+  const taskToBeDeleted = request.body; 
+
+connection.query('DELETE FROM Tasks SET ?', function (error, results, fields) {
+    if (error) {
+      console.log("Task could not be deleted", error);
+      response.status(500).json({
+        error: error
+      });
+    }
+    else {
+      response
+      console.log('deleted ' + results.affectedRows + ' rows');
+    }
+  })
+})
 
 module.exports.handler = serverless(app);
