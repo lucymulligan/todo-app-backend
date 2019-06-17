@@ -76,4 +76,23 @@ connection.query('DELETE FROM Tasks WHERE TaskID = ?', [taskId], function (error
   })
 })
 
+app.put("/tasks/:id", function(request, response) {
+
+  const taskId = request.params.id; 
+  const completed = request.body.completed
+
+connection.query('UPDATE Tasks set completed = ? WHERE TaskID = ?', [completed, taskId], function (error, results, fields) {
+    if (error) {
+      console.log("Task could not be updated", error);
+      response.status(500).json({
+        error: error
+      });
+    }
+    else {
+      response.send(200);
+      console.log('Updated' + results.affectedRows + ' task');
+    }
+  })
+})
+
 module.exports.handler = serverless(app);
