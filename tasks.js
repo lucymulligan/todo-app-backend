@@ -58,11 +58,11 @@ app.post("/tasks", function(request, response) {
   });
 });
 
-app.delete("/tasks", function(request, response) {
+app.delete("/tasks/:id", function(request, response) {
 
-  const taskToBeDeleted = request.body; 
+  const taskId = request.params.id; 
 
-connection.query('DELETE FROM Tasks', function (error, results, fields) {
+connection.query('DELETE FROM Tasks WHERE TaskID = ?', [taskId], function (error, results, fields) {
     if (error) {
       console.log("Task could not be deleted", error);
       response.status(500).json({
@@ -70,7 +70,7 @@ connection.query('DELETE FROM Tasks', function (error, results, fields) {
       });
     }
     else {
-      response
+      response.send(200);
       console.log('deleted ' + results.affectedRows + ' rows');
     }
   })
