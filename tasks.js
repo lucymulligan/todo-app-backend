@@ -17,7 +17,7 @@ const connection = mysql.createConnection({
   database: "tasksdb1"
 });
 
-app.get("/tasks", function(request, response) {
+app.get("/tasks", function (request, response) {
   const username = request.query.username;
   let queryToExecute = "SELECT * FROM Tasks";
   if (username) {
@@ -39,30 +39,30 @@ app.get("/tasks", function(request, response) {
   });
 });
 
-app.post("/tasks", function(request, response) {
+app.post("/tasks", function (request, response) {
 
   const taskToBeSaved = request.body;
 
   connection.query('INSERT INTO Tasks SET ?', taskToBeSaved, function (error, results, fields) {
-   if (error) {
-    console.log("Error saving your task!", error);
+    if (error) {
+      console.log("Error saving your task!", error);
       response.status(500).json({
-      error: error
-    });
-    } 
-    else { 
-    response.json({
-      TaskID: results.insertID
-    });
-   }
+        error: error
+      });
+    }
+    else {
+      response.json({
+        TaskID: results.insertID
+      });
+    }
   });
 });
 
-app.delete("/tasks/:id", function(request, response) {
+app.delete("/tasks/:id", function (request, response) {
 
-  const taskId = request.params.id; 
+  const taskId = request.params.id;
 
-connection.query('DELETE FROM Tasks WHERE TaskID = ?', [taskId], function (error, results, fields) {
+  connection.query('DELETE FROM Tasks WHERE TaskID = ?', [taskId], function (error, results, fields) {
     if (error) {
       console.log("Task could not be deleted", error);
       response.status(500).json({
@@ -76,12 +76,12 @@ connection.query('DELETE FROM Tasks WHERE TaskID = ?', [taskId], function (error
   })
 })
 
-app.put("/tasks/:id", function(request, response) {
+app.put("/tasks/:id", function (request, response) {
 
-  const taskId = request.params.id; 
+  const taskId = request.params.id;
   const completed = request.body.completed
 
-connection.query('UPDATE Tasks set completed = ? WHERE TaskID = ?', [completed, taskId], function (error, results, fields) {
+  connection.query('UPDATE Tasks set completed = ? WHERE TaskID = ?', [completed, taskId], function (error, results, fields) {
     if (error) {
       console.log("Task could not be updated", error);
       response.status(500).json({
