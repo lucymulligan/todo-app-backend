@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: "tasksdb1"
 });
-
+// using ? to sanitise the data
 app.get("/tasks", function (request, response) {
   const username = request.query.username;
   let queryToExecute = "SELECT * FROM Tasks";
